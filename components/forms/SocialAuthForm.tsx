@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { signIn } from "next-auth/react";
 import React from "react";
 
-import { toast } from "@/hooks/use-toast";
-import { signIn } from "next-auth/react";
 import ROUTES from "@/constants/routes";
+import { toast } from "@/hooks/use-toast";
+
 import { Button } from "@/components/ui/button";
 
 const SocialAuthForm = () => {
@@ -16,15 +17,15 @@ const SocialAuthForm = () => {
     try {
       await signIn(provider, {
         callbackUrl: ROUTES.HOME,
-        redirectUrl: false,
+        redirect: false,
       });
     } catch (error) {
       toast({
-        title: "Sign in failed",
+        title: "Sign-in Failed",
         description:
           error instanceof Error
             ? error.message
-            : "An error occurred during sign-in",
+            : "An error occured during sign-in",
         variant: "destructive",
       });
     }
