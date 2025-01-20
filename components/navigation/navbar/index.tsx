@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import ThemeToggler from "./Theme";
-import MobileNavigation from "./MobileNavigation";
+import ThemeToggler from "@/components/navigation/navbar/Theme";
+import MobileNavigation from "@/components/navigation/navbar/MobileNavigation";
 
 const Navbar = () => {
   return (
