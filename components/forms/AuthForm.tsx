@@ -79,6 +79,7 @@ const AuthForm = <T extends FieldValues>({
           />
         ))}
 
+        {/* the ! prefix before a utility class indicates that the important modifier is applied to that class */}
         <Button
           disabled={form.formState.isSubmitting}
           className="primary-gradient paragraph-medium min-h-12 w-full rounded-2 px-4 py-3 font-inter !text-light-900"
