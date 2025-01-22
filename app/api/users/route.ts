@@ -21,6 +21,7 @@ export async function POST(request: Request) {
     await dbConnect();
 
     const body = await request.json();
+    //safeParse for password, otherwise we could use parse
     const validatedData = UserSchema.safeParse(body);
 
     if (!validatedData.success) {

@@ -1,5 +1,6 @@
 import { model, models, Schema, Types, Document } from "mongoose";
 
+//password is optional as user could login from google or github
 export interface IAccount {
   userId: Types.ObjectId;
   name: string;
@@ -23,7 +24,6 @@ const AccountSchema = new Schema<IAccount>(
 );
 
 //If Account model exist than do not create new one.
-
 const Account = models?.Account || model<IAccount>("Account", AccountSchema);
 
 export default Account;

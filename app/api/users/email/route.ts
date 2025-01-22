@@ -9,6 +9,7 @@ export async function POST(request: Request) {
   const { email } = await request.json();
 
   try {
+    //safeParse for password, otherwise we could use parse
     const validatedData = UserSchema.partial().safeParse({ email });
 
     if (!validatedData.success)
