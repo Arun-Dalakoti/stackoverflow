@@ -7,35 +7,26 @@ import handleError from "@/lib/handlers/error";
 import { ValidationError } from "@/lib/http-errors";
 import dbConnect from "@/lib/mongoose";
 import { SignInWithOAuthSchema } from "@/lib/validations";
-
 export async function POST(request: Request) {
   const { provider, providerAccountId, user } = await request.json();
   await dbConnect();
-
-  //Atomic transactions: If account creation is failed than the user creation with that account must also fail
   const session = await mongoose.startSession();
   session.startTransaction();
-
   try {
     const validatedData = SignInWithOAuthSchema.safeParse({
       provider,
       providerAccountId,
       user,
     });
-
     if (!validatedData.success)
       throw new ValidationError(validatedData.error.flatten().fieldErrors);
-
     const { name, username, email, image } = user;
     const slugifiedUsername = slugify(username, {
       lower: true,
       strict: true,
       trim: true,
     });
-
     let existingUser = await User.findOne({ email }).session(session);
-
-    //passed session so that all the operations are done in the same session
     if (!existingUser) {
       [existingUser] = await User.create(
         [{ name, username: slugifiedUsername, email, image }],
@@ -45,7 +36,6 @@ export async function POST(request: Request) {
       const updatedData: { name?: string; image?: string } = {};
       if (existingUser.name !== name) updatedData.name = name;
       if (existingUser.image !== image) updatedData.image = image;
-
       if (Object.keys(updatedData).length > 0) {
         await User.updateOne(
           { _id: existingUser._id },
@@ -53,13 +43,11 @@ export async function POST(request: Request) {
         ).session(session);
       }
     }
-
     const existingAccount = await Account.findOne({
       userId: existingUser._id,
       provider,
       providerAccountId,
     }).session(session);
-
     if (!existingAccount) {
       await Account.create(
         [
@@ -74,8 +62,6 @@ export async function POST(request: Request) {
         { session }
       );
     }
-
-    //commit the changes: to reflect all changes in db
     await session.commitTransaction();
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
