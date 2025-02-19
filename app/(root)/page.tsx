@@ -53,9 +53,6 @@ interface SearchParams {
 }
 
 const Home = async ({ searchParams }: SearchParams) => {
-  const session = await auth();
-  console.log("Session: ", session);
-
   //by default query is undefined so assign "" to show all questions by default
   // The includes() method checks if a string contains a specified substring.
   // Since any string includes an empty string, this condition will always be true for all question objects
