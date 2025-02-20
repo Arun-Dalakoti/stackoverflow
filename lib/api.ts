@@ -4,7 +4,7 @@ import { fetchHandler } from "./handlers/fetch";
 import ROUTES from "@/constants/routes";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001/api";
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/api";
 
 //Note: this is the extra layer we have added so that we can just make function calls in components. Best approach for production level projects.
 export const api = {
